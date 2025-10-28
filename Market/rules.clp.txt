@@ -1,0 +1,202 @@
+;; 1 
+(defrule iphone16-banamex
+ (orden (clienteid ?cte) (prodid ?prd) (metodopagoid ?pago))
+ (cliente (clienteid ?cte) (nombre ?nombre))
+ (smartphone (id ?prd) (marca apple) (modelo iphone16))
+ (tarjetacred (cteid ?pago) (banco banamex))
+ => 
+ (printout t ?nombre " puede pagar a 24 meses sin intereses" crlf)
+)
+
+;; 2 
+(defrule liverpoolvisa-samsung
+ (orden (clienteid ?cte) (prodid ?prd) (metodopagoid ?pago))
+ (cliente (clienteid ?cte) (nombre ?nombre))
+ (smartphone (id ?prd) (marca samsung) (modelo note21))
+ (tarjetacred (cteid ?pago) (banco liverpool) (grupo visa))
+ => 
+ (printout t ?nombre " puede pagar a 12 meses sin intereses" crlf)
+)
+
+;; 3 
+(defrule macbookair-iphone16-contado
+ (orden (clienteid ?cte) (prodid c01) (metodopagoid contado))
+ (orden (clienteid ?cte) (prodid sp01) (metodopagoid contado))
+ (cliente (clienteid ?cte) (nombre ?name))
+ (vales (cteid ?cte) (monto ?cant))
+ (computadora (id c01) (precio ?cprice))
+ (smartphone (id sp01) (precio ?spprice))
+ =>
+ (bind ?total (+ ?cprice ?spprice))
+ (bind ?vales (* (/ ?total 1000) 100))
+ (bind ?valestotales (+ ?cant ?vales))
+ (printout t ?name " ha sumado a sus vales la cantidad de $" ?vales " por comprar el combo apple de contado" crlf)
+ (assert (vales (cteid ?cte) (monto ?valestotales)))
+)
+
+;; 4
+(defrule mica-smartphone
+ (orden (clienteid ?cte) (categoria smartphone))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " tiene un 15% de descuento en funda y mica para su nuevo smartphone" crlf)
+)
+
+;; 5
+(defrule mayoreo50smartphone
+ (orden (clienteid ?cte) (categoria smartphone) (cantidad ?cant&:(> ?cant 50)))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " tiene 25% de descuento al comprar mas de 50 smartphones" crlf)
+)
+
+;; 6
+(defrule cte-sin-compra
+ (not (orden (clienteid ?cte)))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " no ha realizado ninguna compra" crlf)
+)
+
+;; 7 
+(defrule descamex
+ (orden (clienteid ?cte) (metodopagoid ?pago))
+ (tarjetacred (cteid ?pago) (grupo amex))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " por pagar con american express tiene 10% de descuento" crlf)
+)
+
+;; 8 
+(defrule descvales-smartphones
+ (orden (clienteid ?cte) (prodid ?prod) (categoria smartphone) (cantidad ?cant) (metodopagoid vales))
+ (cliente (clienteid ?cte) (nombre ?name))
+ (vales (cteid ?cte) (monto ?vales))
+ (smartphone (id ?prod) (precio ?price))
+ =>
+ (bind ?desc (* ?cant ?price))
+ (bind ?valesfinales (- ?vales ?desc))
+ (assert (vales (cteid ?cte) (monto ?valesfinales)))
+ (printout t ?name " después de esta compra le quedan $" ?valesfinales " en vales" crlf)
+)
+
+;; 9 
+(defrule descvales-computadoras
+ (orden (clienteid ?cte) (prodid ?prod) (categoria computadora) (cantidad ?cant) (metodopagoid vales))
+ (cliente (clienteid ?cte) (nombre ?name))
+ (vales (cteid ?cte) (monto ?vales))
+ (computadora (id ?prod) (precio ?price))
+ =>
+ (bind ?desc (* ?cant ?price))
+ (bind ?valesfinales (- ?vales ?desc))
+ (assert (vales (cteid ?cte) (monto ?valesfinales)))
+ (printout t ?name " después de esta compra le quedan $" ?valesfinales " en vales" crlf)
+)
+
+;; 10
+(defrule descvales-accesorios
+ (orden (clienteid ?cte) (prodid ?prod) (categoria accesorio) (cantidad ?cant) (metodopagoid vales))
+ (cliente (clienteid ?cte) (nombre ?name))
+ (vales (cteid ?cte) (monto ?vales))
+ (accesorio (id ?prod) (precio ?price))
+ =>
+ (bind ?desc (* ?cant ?price))
+ (bind ?valesfinales (- ?vales ?desc))
+ (assert (vales (cteid ?cte) (monto ?valesfinales)))
+ (printout t ?name " después de esta compra le quedan $" ?valesfinales " en vales" crlf)
+)
+
+;; 11
+(defrule descCombo
+ (orden (clienteid ?cte) (categoria smartphone))
+ (orden (clienteid ?cte) (categoria computadora))
+ (orden (clienteid ?cte) (categoria accesorio))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " por comprar un combo tiene 25% de descuento" crlf)
+)
+
+;; 12 
+(defrule mayoreoaccesorios
+ (orden (clienteid ?cte) (categoria accesorio) (cantidad ?cant&:(> ?cant 100)))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " por comprar mas de 100 en accesorios tiene 25% de descuento" crlf)
+)
+
+;; 13
+(defrule 2x1fundas
+ (orden (clienteid ?cte) (prodid a02) (categoria accesorio) (cantidad 2))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " tiene descuento del 50% al comprar 2 fundas" crlf)
+)
+
+;; 14
+(defrule desc-teclado-mouse
+ (orden (clienteid ?cte) (prodid a05) (categoria accesorio))
+ (orden (clienteid ?cte) (prodid a04) (categoria accesorio))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " por comprar teclado y mouse recibe un descuento del 15%" crlf)
+)
+
+;; 15 
+(defrule mayoristas
+ (orden (clienteid ?cte) (cantidad ?cant&:(> ?cant 10)))
+ (cliente (clienteid ?cte) (nombre ?name))
+ =>
+ (printout t ?name " ha sido cliente mayorista" crlf)
+)
+
+;; 16
+(defrule alerta-stock-smartphone
+ (orden (clienteid ?cte) (prodid ?prod) (categoria smartphone))
+ (smartphone (id ?prod) (modelo ?model) (stock ?stock&:(< ?stock 10)))
+ =>
+ (printout t "hay menos de 10 productos en stock del siguiente modelo: " ?model crlf)
+)
+
+;; 17
+(defrule alerta-stock-computadoras
+ (orden (clienteid ?cte) (prodid ?prod) (categoria computadora))
+ (computadora (id ?prod) (modelo ?name) (stock ?stock&:(< ?stock 10)))
+ =>
+ (printout t "hay menos de 10 productos en stock del siguiente modelo: " ?name crlf)
+)
+
+;; 18
+(defrule alerta-stock-accesorios
+ (orden (clienteid ?cte) (prodid ?prod) (categoria accesorio))
+ (accesorio (id ?prod) (modelo ?name) (stock ?stock&:(< ?stock 10)))
+ =>
+ (printout t "hay menos de 10 productos en stock del siguiente modelo: " ?name crlf)
+)
+
+;; 19
+(defrule actualizar-stock-smartphone
+ (orden (prodid ?prod) (categoria smartphone) (cantidad ?cant))
+ (smartphone (id ?prod) (stock ?stock))
+ =>
+ (bind ?nuevostock (- ?stock ?cant))
+ (assert (smartphone (id ?prod) (stock ?nuevostock)))
+)
+
+;; 20
+(defrule actualizar-stock-computadoras
+ (orden (prodid ?prod) (categoria computadora) (cantidad ?cant))
+ (computadora (id ?prod) (stock ?stock))
+ =>
+ (bind ?nuevostock (- ?stock ?cant))
+ (assert (computadora (id ?prod) (stock ?nuevostock)))
+)
+
+;; 21
+(defrule actualizar-stock-accesorio
+ (orden (prodid ?prod) (categoria accesorio) (cantidad ?cant))
+ (accesorio (id ?prod) (stock ?stock))
+ =>
+ (bind ?nuevostock (- ?stock ?cant))
+ (assert (accesorio (id ?prod) (stock ?nuevostock)))
+)
+

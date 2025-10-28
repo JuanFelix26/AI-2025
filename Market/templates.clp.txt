@@ -1,0 +1,54 @@
+
+(deftemplate cliente
+  (slot clienteid)
+  (multislot nombre)
+  (slot phone)
+)
+
+(deftemplate orden
+ (slot clienteid)
+ (slot prodid)
+ (slot categoria)
+ (slot cantidad (default 1))
+ (slot metodopagoid)
+)
+
+(deftemplate smartphone
+ (slot id)
+ (slot marca)
+ (slot modelo)
+ (slot precio)
+ (slot color)
+ (slot stock)
+)
+
+(deftemplate computadora
+ (slot id)
+ (slot marca)
+ (slot modelo)
+ (slot precio)
+ (slot color)
+ (slot stock)
+)
+
+(deftemplate tarjetacred
+ (slot cteid)
+ (slot banco)
+ (slot grupo)
+ (slot fechaexp)
+)
+
+(deftemplate accesorio
+ (slot id)
+ (slot marca)
+ (slot modelo)
+ (slot precio)
+ (slot color)
+ (slot stock)
+)
+
+(deftemplate vales
+ (slot cteid)
+ (slot monto)
+)
+

@@ -1,0 +1,56 @@
+(deffacts clientes
+ (cliente (clienteid 01) (nombre juan felix) (phone 6675018598))
+ (cliente (clienteid 02) (nombre fatmia hernandez) (phone 6675014589))
+ (cliente (clienteid 03) (nombre karim torrontegui) (phone 6675014569))
+ (cliente (clienteid 04) (nombre jesciel cabrales) (phone 6675014157))
+ (cliente (clienteid 05) (nombre manuel bon) (phone 6675014875))
+)
+
+(deffacts smartphones
+ (smartphone (id sp01) (marca apple) (modelo iphone16) (precio 15000) (color blanco) (stock 100))
+ (smartphone (id sp02) (marca samsung) (modelo note21) (precio 10000) (color negro) (stock 100))
+ (smartphone (id sp03) (marca motorola) (modelo g7) (precio 8000) (color azul) (stock 100))
+ (smartphone (id sp04) (marca google) (modelo pixel5) (precio 13000) (color negro) (stock 100))
+ (smartphone (id sp05) (marca apple) (modelo iphone17) (precio 25000) (color naranja) (stock 100))
+)
+
+(deffacts computadoras
+ (computadora (id c01) (marca apple) (modelo macbookair) (precio 25000) (color blanco) (stock 100))
+ (computadora (id c02) (marca samsung) (modelo galaxybook5) (precio 14000) (color blanco) (stock 100))
+ (computadora (id c03) (marca dell) (modelo dc15250) (precio 13000) (color negro) (stock 100))
+ (computadora (id c04) (marca hp) (modelo 240g8) (precio 6000) (color negro) (stock 100))
+ (computadora (id c05) (marca lenovo) (modelo ideapadt14) (precio 7000) (color negro) (stock 100))
+)
+
+(deffacts tarjetascred
+ (tarjetacred (cteid 01) (banco santander) (grupo amex) (fechaexp 31-01-2027))
+ (tarjetacred (cteid 02) (banco bbva) (grupo visa) (fechaexp 31-03-2029))
+ (tarjetacred (cteid 03) (banco banamex) (grupo mastercard) (fechaexp 31-10-2026))
+ (tarjetacred (cteid 04) (banco liverpool) (grupo visa) (fechaexp 31-12-2028))
+ (tarjetacred (cteid 05) (banco banorte) (grupo amex) (fechaexp 31-08-2027))
+)
+
+(deffacts accesorios
+ (accesorio (id a01) (marca apple) (modelo mica) (precio 500) (color negro) (stock 100))
+ (accesorio (id a02) (marca apple) (modelo funda) (precio 1000) (color transparente) (stock 100))
+ (accesorio (id a03) (marca apple) (modelo cargador) (precio 800) (color blanco) (stock 100))
+ (accesorio (id a04) (marca apple) (modelo teclado) (precio 1500) (color blanco) (stock 100))
+ (accesorio (id a05) (marca samsung) (modelo mouse) (precio 1000) (color blanco) (stock 100))
+)
+
+(deffacts vales
+ (vales (cteid 01) (monto 1000))
+ (vales (cteid 02) (monto 1000))
+ (vales (cteid 03) (monto 1000))
+ (vales (cteid 04) (monto 1000))
+ (vales (cteid 05) (monto 1000))
+)
+
+(deffacts ordenes
+ (orden (clienteid 03) (prodid sp01) (categoria smartphone) (cantidad 1) (metodopagoid 03))
+(orden (clienteid 04) (prodid c01) (categoria computadora) (cantidad 1) (metodopagoid 04))
+(orden (clienteid 01) (prodid a02) (categoria accesorio) (cantidad 2) (metodopagoid 01))
+(orden (clienteid 05) (prodid a01) (categoria accesorio) (cantidad 1) (metodopagoid vales))
+(orden (clienteid 03) (prodid sp02) (categoria smartphone) (cantidad 70) (metodopagoid 03))
+)
+
